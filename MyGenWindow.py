@@ -76,7 +76,7 @@ class MyGenWindow(wx.Frame):
         print('创建数据生预览窗口')
         self.genPlot = MyPlotWindow(self,id=-1, title=u'综合管廊火灾仿真---数据生成', pos=(10, 10),
                                size=(500, 600), style=wx.DEFAULT_FRAME_STYLE,
-                               funcFlag=self.funcID,timeFlag=self.timeID,frenFlag=self.frenID)
+                               funcFlag=self.funcID,timeFlag=self.timeID,frenFlag=self.frenID,genFlag=0)
         self.genPlot.Center()
         self.genPlot.Show(True)
         pass
