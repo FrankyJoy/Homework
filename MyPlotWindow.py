@@ -11,6 +11,7 @@ import numpy
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.figure import Figure
 import random
+import scipy.stats
 
 
 class MyPlotWindow(wx.Frame):
@@ -263,21 +264,29 @@ class MyPlotWindow(wx.Frame):
         #   生成数据
         if self.funcFlag == 0:      #y = at +b
             par_a,par_b = self._getPar()
-            self.tlist = numpy.arange(0,time,(1/fren))   # X 轴
+            self.tlist = numpy.arange(0,time+(1 / fren),(1/fren))   # X 轴
             for x in self.tlist:
                 self.ylist.append(par_a * x + par_b)
             print(self.ylist)
             pass
         elif self.funcFlag == 1:
             par_a, par_b, par_c = self._getPar()
-            self.tlist = numpy.arange(0, time, (1 / fren))  # X 轴
+            self.tlist = numpy.arange(0, time+(1 / fren), (1 / fren))  # X 轴
+            random = numpy.random.RandomState(0)
             for x in self.tlist:
-                self.ylist.append(par_a * x + random.uniform(par_b,par_c))
+                self.ylist.append(par_a * x + (random.uniform(par_b,par_c)))
             print(self.ylist)
-            # #####
+            # #####float('%.2f' % a)
             pass
         elif self.funcFlag == 2 :
-
+            par_a, par_b = self._getPar()
+            if par_a == 0:
+                wx.MessageBox("输入的期望不能为0","正态分布参数错误",wx.OK | wx.ICON_INFORMATION)
+                return None
+            self.tlist = numpy.arange(0, time+(1 / fren), (1 / fren))  # X 轴
+            for x in self.tlist:
+                self.ylist.append(scipy.stats.norm.pdf(x,par_a,par_b))
+            print(self.ylist)
             #   正态分布 函数
             # #####
             pass
