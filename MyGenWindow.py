@@ -5,8 +5,6 @@
 # @Date  : 2017/11/22
 # @Desc  : 数据生成窗口
 
-import wx as wx
-import wx.lib.buttons as wxBtn
 from MyPlotWindow import *
 
 class MyGenWindow(wx.Frame):

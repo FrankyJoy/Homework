@@ -191,27 +191,6 @@ class MyPlotWindow(wx.Frame):
         self.panel.SetSizer(vbox)
         self.Centre()
 
-        # scores = [89, 98, 70, 80, 60, 78, 85, 90]
-        # sum = 0
-        # for s in scores:
-        #     sum += s
-        # average = sum / len(scores)
-        #
-        # t_score = numpy.arange(1, len(scores) + 1, 1)
-        # s_score = numpy.array(scores)
-        #
-        # self.figure_score = Figure()
-        # self.figure_score.set_figheight(3.6)
-        # self.figure_score.set_figwidth(7.8)
-        # self.axes_score = self.figure_score.add_subplot(111)
-        #
-        # self.axes_score.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
-        # self.axes_score.axhline(y=average, color='r')
-        # self.axes_score.set_title(u'My Scores')
-        # self.axes_score.grid(True)
-        # self.axes_score.set_xlabel('T')
-        # self.axes_score.set_ylabel('score')
-        # FigureCanvas(self.scorePanel, -1, self.figure_score)
         pass
 
     def DrawPic(self,handler):
@@ -357,5 +336,5 @@ class MyPlotWindow(wx.Frame):
     #   确认生成按钮
     def genData(self,handler):
         MysqlCon.fillCoTable(self.ylist,self.time,self.fren)
-        wx.MessageBox("恭喜，数据生成成功","成功",wx.OK | wx.ICON_INFORMATION)
+        wx.MessageBox("恭喜，数据生成成功，已存入数据库！","成功",wx.OK | wx.ICON_INFORMATION)
         pass
