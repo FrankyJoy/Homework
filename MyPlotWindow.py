@@ -12,6 +12,7 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.figure import Figure
 import random
 import scipy.stats
+import MysqlCon
 
 
 class MyPlotWindow(wx.Frame):
@@ -47,6 +48,9 @@ class MyPlotWindow(wx.Frame):
         self.nm_a = wx.TextCtrl()
         self.nm_b = wx.TextCtrl()
         self.nm_c = wx.TextCtrl()
+
+        self.time = 0
+        self.fren = 0
 
 
         #  重型布局BoxSizer
@@ -176,9 +180,10 @@ class MyPlotWindow(wx.Frame):
         inBox4.Add(self.MyFig ,0,wx.ALL | wx.EXPAND,1)
         coSizer.Add(inBox4, 0, wx.ALL | wx.CENTER, 5)
 
-        self.but_gen = wxBtn.GenButton(self.panel,-1,size=(80,30),label=u"确认生成")
+        self.btn_go = wxBtn.GenButton(self.panel,-1,size=(80,30),label=u"确认生成")
+        self.Bind(wx.EVT_BUTTON, self.genData, self.btn_go)
         inBox5 = wx.BoxSizer(wx.HORIZONTAL)
-        inBox5.Add(self.but_gen,0,wx.ALL | wx.CENTER,5)
+        inBox5.Add(self.btn_go,0,wx.ALL | wx.CENTER,5)
         coSizer.Add(inBox5,0,wx.ALL | wx.CENTER,1)
 
         # self.Bind(wx.EVT_BUTTON, self.btn_cb_co, self.btn_co_confirm)
@@ -236,26 +241,26 @@ class MyPlotWindow(wx.Frame):
             pass
 
         if self.timeFlag == 0:
-            time = 30
+            self.time = 30
             pass
         elif self.timeFlag == 1:
-            time = 60
+            self.time = 60
             pass
         elif self.timeFlag == 2 :
-            time = 120
+            self.time = 120
             pass
         else:
             print("DrawPic Error")
             pass
 
         if self.frenFlag == 0:
-            fren = 1
+            self.fren = 1
             pass
         elif self.frenFlag == 1:
-            fren = 2
+            self.fren = 2
             pass
         elif self.frenFlag == 2 :
-            fren = 4
+            self.fren = 4
             pass
         else:
             print("DrawPic Error")
@@ -264,14 +269,14 @@ class MyPlotWindow(wx.Frame):
         #   生成数据
         if self.funcFlag == 0:      #y = at +b
             par_a,par_b = self._getPar()
-            self.tlist = numpy.arange(0,time+(1 / fren),(1/fren))   # X 轴
+            self.tlist = numpy.arange(0,self.time+(1 / self.fren),(1/self.fren))   # X 轴
             for x in self.tlist:
                 self.ylist.append(par_a * x + par_b)
             print(self.ylist)
             pass
         elif self.funcFlag == 1:
             par_a, par_b, par_c = self._getPar()
-            self.tlist = numpy.arange(0, time+(1 / fren), (1 / fren))  # X 轴
+            self.tlist = numpy.arange(0, self.time+(1 / self.fren), (1 / self.fren))  # X 轴
             random = numpy.random.RandomState(0)
             for x in self.tlist:
                 self.ylist.append(par_a * x + (random.uniform(par_b,par_c)))
@@ -283,7 +288,7 @@ class MyPlotWindow(wx.Frame):
             if par_a == 0:
                 wx.MessageBox("输入的期望不能为0","正态分布参数错误",wx.OK | wx.ICON_INFORMATION)
                 return None
-            self.tlist = numpy.arange(0, time+(1 / fren), (1 / fren))  # X 轴
+            self.tlist = numpy.arange(0, self.time+(1 / self.fren), (1 / self.fren))  # X 轴
             for x in self.tlist:
                 self.ylist.append(scipy.stats.norm.pdf(x,par_a,par_b))
             print(self.ylist)
@@ -349,3 +354,8 @@ class MyPlotWindow(wx.Frame):
         else:
             wx.MessageBox("输入框取值错误", "ERROR！", wx.OK | wx.ICON_INFORMATION)
 
+    #   确认生成按钮
+    def genData(self,handler):
+        MysqlCon.fillCoTable(self.ylist,self.time,self.fren)
+        wx.MessageBox("恭喜，数据生成成功","成功",wx.OK | wx.ICON_INFORMATION)
+        pass
