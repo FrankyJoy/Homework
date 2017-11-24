@@ -10,7 +10,7 @@ import wx.lib.buttons as wxBtn
 import numpy
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.figure import Figure
-import re
+import random
 
 
 class MyPlotWindow(wx.Frame):
@@ -22,9 +22,9 @@ class MyPlotWindow(wx.Frame):
         self.timeFlag = timeFlag
         self.frenFlag = frenFlag
         self.genFlag = genFlag
-        # self.nm_a = wx.TextCtrl()
-        # self.nm_b = wx.TextCtrl()
-        # self.nm_c = wx.TextCtrl()
+        self.tlist = []
+        self.ylist = []
+
         print(self.funcFlag+self.timeFlag+self.frenFlag)
         self.InitUI()
         pass
@@ -160,14 +160,14 @@ class MyPlotWindow(wx.Frame):
         s_score = numpy.array(scores)
 
         self.figure_score = Figure()
-        self.figure_score.set_figheight(4.0)
-        self.figure_score.set_figwidth(7.8)
+        self.figure_score.set_figheight(4.1)
+        self.figure_score.set_figwidth(8.0)
         self.axes_score = self.figure_score.add_subplot(111)
 
         self.axes_score.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
         self.axes_score.axhline(y=average, color='r')
         self.axes_score.grid(True)
-        self.axes_score.set_title(u'Empty Now ')
+        self.axes_score.set_title(u'Please Input Parameter ')
         self.axes_score.set_xlabel(u'Empty Now ')
         self.axes_score.set_ylabel(u'Empty Now ')
 
@@ -182,7 +182,6 @@ class MyPlotWindow(wx.Frame):
 
         # self.Bind(wx.EVT_BUTTON, self.btn_cb_co, self.btn_co_confirm)
         vbox.Add(coSizer, 0, wx.ALL | wx.EXPAND, 1)
-        # vbox.Add(viSizer, 0, wx.ALL | wx.EXPAND, 5)
         self.panel.SetSizer(vbox)
         self.Centre()
 
@@ -211,7 +210,9 @@ class MyPlotWindow(wx.Frame):
 
     def DrawPic(self,handler):
         print('run into DrawPic Func')
-        # wx.MessageBox("This is a Message Box", "Message", wx.OK | wx.ICON_INFORMATION)
+        self.axes_score.clear()
+        self.ylist = []
+        self.tlist = []
         #   确定图形标题 及横纵轴
         if self.genFlag == 0:
             self.axes_score.set_title(u'CO Data Curve')
@@ -262,42 +263,47 @@ class MyPlotWindow(wx.Frame):
         #   生成数据
         if self.funcFlag == 0:      #y = at +b
             par_a,par_b = self._getPar()
-            print(par_a)
-            print(par_b)
-
-
-
-
-
-
-
-
-
-
-
+            self.tlist = numpy.arange(0,time,(1/fren))   # X 轴
+            for x in self.tlist:
+                self.ylist.append(par_a * x + par_b)
+            print(self.ylist)
             pass
         elif self.funcFlag == 1:
+            par_a, par_b, par_c = self._getPar()
+            self.tlist = numpy.arange(0, time, (1 / fren))  # X 轴
+            for x in self.tlist:
+                self.ylist.append(par_a * x + random.uniform(par_b,par_c))
+            print(self.ylist)
+            # #####
             pass
         elif self.funcFlag == 2 :
+
+            #   正态分布 函数
+            # #####
             pass
         else:
             print("DrawPic Error")
             pass
-
+        self.axes_score.plot(self.tlist, self.ylist, 'c^', self.tlist, self.ylist, 'k')
+        self.axes_score.grid(True)
         self.MyFig.draw()
         pass
 
-    def _getValue(self,value):
-        return value
-
     #   判断数据是不是数字
-    def _isFloat(self,value):
-        pl = re.compile(r'^[-+]?[0-9]+\.?[0-9]+$')
-        result = pl.match(value)
-        if result:
+    def _isNum(self,value):
+        try:
+            float(value)
             return True
-        else:
-            return False
+        except ValueError:
+            pass
+
+        try:
+            import unicodedata
+            unicodedata.numeric(value)
+            return True
+        except (TypeError, ValueError):
+            pass
+        return False
 
     #   从输入框获取参数
     def _getPar(self):
@@ -308,7 +314,7 @@ class MyPlotWindow(wx.Frame):
             else:
                 par_a = self.nm_a.GetValue()
                 par_b = self.nm_b.GetValue()
-                if not(self._isFloat(par_a) and self._isFloat(par_b)):
+                if not(self._isNum(par_a) and self._isNum(par_b)):
                     wx.MessageBox("参数应输入数字，请重新输入", "警告，参数错误！", wx.OK | wx.ICON_INFORMATION)
                     return 0,0
                 else :
@@ -323,7 +329,7 @@ class MyPlotWindow(wx.Frame):
                 par_a = self.nm_a.GetValue()
                 par_b = self.nm_b.GetValue()
                 par_c = self.nm_c.GetValue()
-                if not (self._isFloat(par_a) and self._isFloat(par_b) and self._isFloat(par_c)):
+                if not (self._isNum(par_a) and self._isNum(par_b) and self._isNum(par_c)):
                     wx.MessageBox("参数应输入数字，请重新输入", "警告，参数错误！", wx.OK | wx.ICON_INFORMATION)
                     return 0,0,0
                 else:
