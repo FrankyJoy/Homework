@@ -30,7 +30,7 @@ class MyGenWindow(wx.Frame):
         nm = wx.StaticBox(self.pl_gen, -1, 'CO浓度生成:')
 
         coSizer = wx.StaticBoxSizer(nm, wx.HORIZONTAL)   #   RadioButton的StataicSizer
-        funcList = ['Y = aX + b', 'Y = aX + Rand(b~c)',u'正态分布']
+        funcList = ['Y = aT + b', 'Y = aT + Rand(b~c)',u'正态分布']
         timeList = [u'30 秒',u'60 秒',u'120 秒']
         frenList = ['1 次/秒','2 次/秒','4 次/秒']
         self.radio_func =wx.RadioBox(self.pl_gen, -1, "数据生成函数", (10, 10), wx.DefaultSize,
