@@ -1,19 +1,22 @@
 
 import pymysql
 
-def fillCoTable(yline,time,fren):
+def fillCoTable(yline,time,fren,dbtable):
     # 打开数据库连接
-    db = pymysql.connect("localhost" ,"root" ,"root123" ,"testDb" )
+    db = pymysql.connect("localhost" ,"root" ,"root123","testDb")
 
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
 
     # 如果数据表已经存在使用 execute() 方法删除表。
-    cursor.execute("DROP TABLE IF EXISTS testDb.CO_DATA")
+    sql_drop = "DROP TABLE IF EXISTS testDb." + dbtable
+    cursor.execute(sql_drop)
 
     # 创建数据表SQL语句
-    sql = """
-         CREATE TABLE testDb.CO_DATA (
+    sql_createTable =""" 
+         CREATE TABLE testDb.""" + dbtable +\
+         """
+         (
          id INT NOT NULL AUTO_INCREMENT,
          c_value  FLOAT ,
          c_time  INT,
@@ -21,10 +24,10 @@ def fillCoTable(yline,time,fren):
          PRIMARY KEY (id)
           )
           """
-    cursor.execute(sql)
+    cursor.execute(sql_createTable)
 
     for index in range(len(yline)):
-        insert = "INSERT INTO testDb.CO_DATA(c_value,c_time,c_fren) value (" + str(yline[index]) + "," + str(time) +","+str(fren)+")"
+        insert = "INSERT INTO testDb."+dbtable+"(c_value,c_time,c_fren) value (" + str(yline[index]) + "," + str(time) +","+str(fren)+")"
         cursor.execute(insert)
     try:
        # 执行sql语句

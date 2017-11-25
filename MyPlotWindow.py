@@ -36,9 +36,9 @@ class MyPlotWindow(wx.Frame):
         if self.genFlag == 0:               #   生成CO数据
             self.SetTitle('CO数据生成预览')
         elif self.genFlag == 1 :
-            self.SetTitle('采样时间生成预览')
+            self.SetTitle('烟雾浓度生成预览')
         elif self.genFlag == 2:
-            self.SetTitle('采样频率生成预览')
+            self.SetTitle('温度生成预览')
         else:
             print('参数错误！！！')
 
@@ -202,18 +202,17 @@ class MyPlotWindow(wx.Frame):
         if self.genFlag == 0:
             self.axes_score.set_title(u'CO Data Curve')
             self.axes_score.set_xlabel(u't  Second')
-            self.axes_score.set_ylabel(u'??!!')
+            self.axes_score.set_ylabel(u'unKnow')
             pass
         elif self.genFlag == 1:
-            self.axes_score.set_title(u'烟雾浓度生成数据曲线')
+            self.axes_score.set_title(u'Smoke concentration Data Curve')
             self.axes_score.set_xlabel(u't  秒')
-            self.axes_score.set_ylabel(u'??!!')
+            self.axes_score.set_ylabel(u'unKnow')
             pass
         elif self.genFlag == 2:
-            self.axes_score.set_title(u'??!!')
-            self.axes_score.set_title(u'??!!')
+            self.axes_score.set_title(u'Temperature Data Curve')
             self.axes_score.set_xlabel(u't second')
-            self.axes_score.set_ylabel(u'??!!')
+            self.axes_score.set_ylabel(u'unKnow')
             pass
         else:
             print("DrawPic Error")
@@ -335,6 +334,15 @@ class MyPlotWindow(wx.Frame):
 
     #   确认生成按钮
     def genData(self,handler):
-        MysqlCon.fillCoTable(self.ylist,self.time,self.fren)
-        wx.MessageBox("恭喜，数据生成成功，已存入数据库！","成功",wx.OK | wx.ICON_INFORMATION)
+        if self.genFlag == 0:       #  CO数据生成
+            MysqlCon.fillCoTable(self.ylist,self.time,self.fren,"CO_Data")
+            wx.MessageBox("恭喜，数据生成成功，已存入数据库！","成功",wx.OK | wx.ICON_INFORMATION)
+        elif self.genFlag == 1:
+            MysqlCon.fillCoTable(self.ylist, self.time, self.fren, "SM_Data")
+            wx.MessageBox("恭喜，数据生成成功，已存入数据库！", "成功", wx.OK | wx.ICON_INFORMATION)
+        elif self.genFlag == 2:
+            MysqlCon.fillCoTable(self.ylist, self.time, self.fren, "TP_Data")
+            wx.MessageBox("恭喜，数据生成成功，已存入数据库！", "成功", wx.OK | wx.ICON_INFORMATION)
+        else:
+            wx.MessageBox("参数错误，生成失败", "失败！", wx.OK | wx.ICON_INFORMATION)
         pass
