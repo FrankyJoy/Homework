@@ -7,6 +7,7 @@
 
 
 from  MyGenWindow import *
+from  MySimWindow import *
 import PyGenerateData as PyGen
 
 '''
@@ -51,6 +52,12 @@ class MyMainWindow(wx.Frame):
 
     #   仿真窗口
     def SimWindow(self,handler):
+        style = wx.DEFAULT_FRAME_STYLE ^ wx.MAXIMIZE_BOX
+        simWindow = MySimWindow(self,id=-1,title=u'综合管廊火灾仿真---程序仿真',pos=(0,0),
+                               size=(1200, 750), style=style)
+        simWindow.Centre()
+        simWindow.Show(True)
+        return True
         pass
 
     def CloseWin(self,handler):

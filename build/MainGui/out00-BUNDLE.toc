@@ -1,3 +1,0 @@
-([('MainGui',
-   '/Users/hepeng/workspace/python/homework/dist/MainGui',
-   'EXECUTABLE')],)
