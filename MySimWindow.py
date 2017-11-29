@@ -24,10 +24,21 @@ class MySimWindow(wx.Frame):
         self.SetBackgroundColour('#FFF5EE')
         self.panel = wx.Panel(self)
         #  重型布局BoxSizer
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox = wx.BoxSizer(wx.HORIZONTAL)
+
+        #   布局的staticbox
+        nm = wx.StaticBox(self.panel, -1, '控制台输出:')
+        sizer_left = wx.StaticBoxSizer(nm, wx.HORIZONTAL)
+
+        nm_center = wx.StaticBox(self.panel, -1, '仿真绘图窗口:')
+        sizer_center = wx.StaticBoxSizer(nm_center, wx.HORIZONTAL)
+
+        nm_right = wx.StaticBox(self.panel, -1, '仿真控制按钮:')
+        sizer_right = wx.StaticBoxSizer(nm_right, wx.HORIZONTAL)
+
+
         #   左侧控制台输出
-        nm = wx.StaticBox(self.panel, -1, '')
-        coSizer = wx.StaticBoxSizer(nm, wx.HORIZONTAL)  # RadioButton的StataicSizer
+
 
         inBox1 = wx.BoxSizer(wx.VERTICAL)
 
@@ -37,6 +48,8 @@ class MySimWindow(wx.Frame):
         self.out_save.SetBackgroundColour('#E0EEEE')
         inBox1.Add(self.outInfo, 0, wx.ALL | wx.CENTER, 1)
         inBox1.Add(self.out_save, 0, wx.ALL | wx.CENTER, 1)
+        sizer_left.Add(inBox1, 0, wx.ALL | wx.EXPAND, 1)
+
 
         #   中部绘图窗口
         inBox2 = wx.BoxSizer(wx.VERTICAL)
@@ -66,6 +79,8 @@ class MySimWindow(wx.Frame):
         self.out_save = wxBtn.GenButton(self.panel, -1, u"暂停仿真", size=(95, 30), )
         self.out_save.SetBackgroundColour('#E0EEEE')
         inBox2.Add(self.out_save, 0, wx.ALL | wx.CENTER, 1)
+        sizer_center.Add(inBox2, 0, wx.ALL | wx.CENTER, 5)
+
 
         #   右侧控制按钮
         inBox3 = wx.BoxSizer(wx.VERTICAL)
@@ -87,6 +102,7 @@ class MySimWindow(wx.Frame):
         inBox3.Add(self.cont_tp, 0, wx.ALL | wx.EXPAND, 1)
         inBox3.Add(self.cont_fuc, 0, wx.ALL | wx.EXPAND, 1)
 
+        sizer_right.Add(inBox3, 0, wx.ALL | wx.CENTER, 1)
         # inBox2 = wx.BoxSizer(wx.HORIZONTAL)
         # inBox2.Add(tit_timeandfren, 0, wx.ALL | wx.EXPAND, 1)
 
@@ -94,9 +110,9 @@ class MySimWindow(wx.Frame):
         # self.btn_go.Centre()
         # self.Bind(wx.EVT_BUTTON, self.DrawPic, self.btn_go)
         # inBox3.Add(self.btn_go, 0, wx.ALL | wx.EXPAND, 1)
-        coSizer.Add(inBox1, 0, wx.ALL | wx.EXPAND, 1)
-        coSizer.Add(inBox2, 0, wx.ALL | wx.CENTER, 5)
-        coSizer.Add(inBox3, 0, wx.ALL | wx.CENTER, 1)
+
+
+
 
         #   画图部分
         # inBox4 = wx.BoxSizer(wx.HORIZONTAL)
@@ -123,18 +139,20 @@ class MySimWindow(wx.Frame):
         #
         # self.MyFig = FigureCanvas(self.panel, -1, self.figure_score)
         # inBox4.Add(self.MyFig, 0, wx.ALL | wx.EXPAND, 1)
-        # coSizer.Add(inBox4, 0, wx.ALL | wx.CENTER, 5)
+        # sizer_left.Add(inBox4, 0, wx.ALL | wx.CENTER, 5)
         #
         # self.btn_go = wxBtn.GenButton(self.panel, -1, size=(80, 30), label=u"确认生成")
         # self.Bind(wx.EVT_BUTTON, self.genData, self.btn_go)
-        inBox5 = wx.BoxSizer(wx.HORIZONTAL)
+        # inBox5 = wx.BoxSizer(wx.HORIZONTAL)
         # inBox5.Add(self.btn_go, 0, wx.ALL | wx.CENTER, 5)
-        coSizer.Add(inBox5, 0, wx.ALL | wx.CENTER, 1)
+        # sizer_left.Add(inBox5, 0, wx.ALL | wx.CENTER, 1)
 
         # self.Bind(wx.EVT_BUTTON, self.btn_cb_co, self.btn_co_confirm)
 
 
-        vbox.Add(coSizer, 0, wx.ALL | wx.EXPAND, 1)
+        vbox.Add(sizer_left, 0, wx.ALL | wx.LEFT, 1)
+        vbox.Add(sizer_center, 0, wx.ALL | wx.CENTER, 1)
+        vbox.Add(sizer_right, 0, wx.ALL | wx.RIGHT, 1)
         self.panel.SetSizer(vbox)
         self.Centre()
 
