@@ -54,7 +54,7 @@ class MyMainWindow(wx.Frame):
     def SimWindow(self,handler):
         style = wx.DEFAULT_FRAME_STYLE ^ wx.MAXIMIZE_BOX
         simWindow = MySimWindow(self,id=-1,title=u'综合管廊火灾仿真---程序仿真',pos=(0,0),
-                               size=(1200, 750), style=style)
+                               size=(1200, 755), style=style)
         simWindow.Centre()
         simWindow.Show(True)
         return True
