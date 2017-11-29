@@ -21,12 +21,11 @@ class MySimWindow(wx.Frame):
         pass
 
     def InitUI(self):
+        #   声明Panel，改变背景色
         self.SetBackgroundColour('#FFF5EE')
         self.panel = wx.Panel(self)
-        #  重型布局BoxSizer
+        #   布局块
         vbox = wx.BoxSizer(wx.HORIZONTAL)
-
-        #   布局的staticbox
         nm = wx.StaticBox(self.panel, -1, '控制台输出:')
         sizer_left = wx.StaticBoxSizer(nm, wx.HORIZONTAL)
 
@@ -35,21 +34,16 @@ class MySimWindow(wx.Frame):
 
         nm_right = wx.StaticBox(self.panel, -1, '仿真控制按钮:')
         sizer_right = wx.StaticBoxSizer(nm_right, wx.HORIZONTAL)
-
-
         #   左侧控制台输出
-
-
         inBox1 = wx.BoxSizer(wx.VERTICAL)
 
         self.outInfo = wx.TextCtrl(self.panel, value = "当前未开始仿真",
-                                   style = wx.TE_READONLY|wx.TE_LEFT,size=(285,660))
+                                   style = wx.TE_READONLY|wx.TE_LEFT,size=(210,660))
         self.out_save = wxBtn.GenButton(self.panel,-1,u"清空控制台输出",size=(95,30),)
         self.out_save.SetBackgroundColour('#E0EEEE')
         inBox1.Add(self.outInfo, 0, wx.ALL | wx.CENTER, 1)
         inBox1.Add(self.out_save, 0, wx.ALL | wx.CENTER, 1)
-        sizer_left.Add(inBox1, 0, wx.ALL | wx.EXPAND, 1)
-
+        sizer_left.Add(inBox1, 0, wx.ALL | wx.EXPAND, 0)
 
         #   中部绘图窗口
         inBox2 = wx.BoxSizer(wx.VERTICAL)
@@ -62,24 +56,49 @@ class MySimWindow(wx.Frame):
         t_score = numpy.arange(1, len(scores) + 1, 1)
         s_score = numpy.array(scores)
 
-        self.figure_score = Figure()
-        self.figure_score.set_figheight(4.1)
-        self.figure_score.set_figwidth(8.0)
-        self.axes_score = self.figure_score.add_subplot(111)
+        self.figure_map = Figure()
+        self.figure_map.set_figheight(6.7)
+        self.figure_map.set_figwidth(8)
 
-        self.axes_score.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
-        self.axes_score.axhline(y=average, color='r')
-        self.axes_score.grid(True)
-        self.axes_score.set_title(u'Please Input Parameter ')
-        self.axes_score.set_xlabel(u'Empty Now ')
-        self.axes_score.set_ylabel(u'Empty Now ')
+        # self.sub_co = self.subplots()
+        self.axes_co = self.figure_map.add_subplot(221)
+        self.axes_sm = self.figure_map.add_subplot(222)
+        self.axes_tp = self.figure_map.add_subplot(223)
+        self.axes_cal = self.figure_map.add_subplot(224)
 
-        self.MyFig = FigureCanvas(self.panel, -1, self.figure_score)
+        self.axes_co.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
+        self.axes_co.axhline(y=average, color='r')
+        self.axes_co.grid(True)
+        self.axes_co.set_title(u'Please Input Parameter -- CO')
+        self.axes_co.set_ylabel(u'Empty Now ')
+        # self.axes_co.set_major_locator()
+
+        self.axes_sm.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
+        self.axes_sm.axhline(y=average, color='r')
+        self.axes_sm.grid(True)
+        self.axes_sm.set_title(u'Please Input Parameter -- sm')
+        self.axes_sm.set_ylabel(u'Empty Now ')
+
+        self.axes_tp.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
+        self.axes_tp.axhline(y=average, color='r')
+        self.axes_tp.grid(True)
+        self.axes_tp.set_title(u'Please Input Parameter -- tp')
+        self.axes_tp.set_xlabel(u'Empty Now ')
+        self.axes_tp.set_ylabel(u'Empty Now ')
+
+        self.axes_cal.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
+        self.axes_cal.axhline(y=average, color='r')
+        self.axes_cal.grid(True)
+        self.axes_cal.set_title(u'Please Input Parameter --cal')
+        self.axes_cal.set_xlabel(u'Empty Now ')
+        self.axes_cal.set_ylabel(u'Empty Now ')
+
+        self.MyFig = FigureCanvas(self.panel, -1, self.figure_map)
         inBox2.Add(self.MyFig, 0, wx.ALL | wx.EXPAND, 1)
         self.out_save = wxBtn.GenButton(self.panel, -1, u"暂停仿真", size=(95, 30), )
         self.out_save.SetBackgroundColour('#E0EEEE')
         inBox2.Add(self.out_save, 0, wx.ALL | wx.CENTER, 1)
-        sizer_center.Add(inBox2, 0, wx.ALL | wx.CENTER, 5)
+        sizer_center.Add(inBox2, 0, wx.ALL | wx.CENTER, 0)
 
 
         #   右侧控制按钮
@@ -125,19 +144,19 @@ class MySimWindow(wx.Frame):
         # t_score = numpy.arange(1, len(scores) + 1, 1)
         # s_score = numpy.array(scores)
         #
-        # self.figure_score = Figure()
-        # self.figure_score.set_figheight(4.1)
-        # self.figure_score.set_figwidth(8.0)
-        # self.axes_score = self.figure_score.add_subplot(111)
+        # self.figure_map = Figure()
+        # self.figure_map.set_figheight(4.1)
+        # self.figure_map.set_figwidth(8.0)
+        # self.axes_cal = self.figure_map.add_subplot(111)
         #
-        # self.axes_score.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
-        # self.axes_score.axhline(y=average, color='r')
-        # self.axes_score.grid(True)
-        # self.axes_score.set_title(u'Please Input Parameter ')
-        # self.axes_score.set_xlabel(u'Empty Now ')
-        # self.axes_score.set_ylabel(u'Empty Now ')
+        # self.axes_cal.plot(t_score, s_score, 'ro', t_score, s_score, 'k')
+        # self.axes_cal.axhline(y=average, color='r')
+        # self.axes_cal.grid(True)
+        # self.axes_cal.set_title(u'Please Input Parameter ')
+        # self.axes_cal.set_xlabel(u'Empty Now ')
+        # self.axes_cal.set_ylabel(u'Empty Now ')
         #
-        # self.MyFig = FigureCanvas(self.panel, -1, self.figure_score)
+        # self.MyFig = FigureCanvas(self.panel, -1, self.figure_map)
         # inBox4.Add(self.MyFig, 0, wx.ALL | wx.EXPAND, 1)
         # sizer_left.Add(inBox4, 0, wx.ALL | wx.CENTER, 5)
         #
@@ -154,6 +173,7 @@ class MySimWindow(wx.Frame):
         vbox.Add(sizer_center, 0, wx.ALL | wx.CENTER, 1)
         vbox.Add(sizer_right, 0, wx.ALL | wx.RIGHT, 1)
         self.panel.SetSizer(vbox)
+        # self.Fit()  有此函数会缩成一团！！！
         self.Centre()
 
         pass
