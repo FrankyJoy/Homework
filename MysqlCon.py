@@ -40,3 +40,28 @@ def fillCoTable(yline,time,fren,dbtable):
     # 关闭数据库连接
     db.close()
     pass
+
+def getListOfTable(dbName):
+    db = pymysql.connect("localhost", "root", "root123", dbName)
+    cursor = db.cursor()
+    sql = "select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = '"+dbName+"'"
+    # 使用 cursor() 方法创建一个游标对象 cursor
+    tableNames = cursor.execute(sql)
+    try:
+       # 执行sql语句
+       # 提交到数据库执行
+       db.commit()
+    except:
+       # Rollback in case there is any error
+       db.rollback()
+
+    # 关闭数据库连接
+    db.close()
+    tables = list(cursor.fetchmany(tableNames))
+    tableList = []
+
+    for x in tables:
+        tableList.append(str(x).replace('(\'','').replace(',','').replace('\')',''))
+
+    return tableList
+    pass

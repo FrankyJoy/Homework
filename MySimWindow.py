@@ -102,35 +102,44 @@ class MySimWindow(wx.Frame):
 
 
         #   右侧控制按钮
+        sampleList = MysqlCon.getListOfTable('testDb')
         inBox3 = wx.BoxSizer(wx.VERTICAL)
+        load_co_txt = wx.StaticText(self.panel,-1,"CO数据表选择")
+        self.dwlist_co =  wx.Choice(self.panel, -1, (85, 18), choices=sampleList)
+        self.dwlist_co.SetSelection(0)
 
-        self.cont_co = wxBtn.GenButton(self.panel, -1, u"暂停仿真", size=(95, 30), )
-        self.cont_co.SetBackgroundColour('#E0EEEE')
+        load_sm_txt = wx.StaticText(self.panel, -1, "烟雾浓度数据表选择")
+        self.dwlist_sm = wx.Choice(self.panel, -1, (85, 18), choices=sampleList)
+        self.dwlist_sm.SetSelection(1)
 
-        self.cont_sm = wxBtn.GenButton(self.panel, -1, u"暂停仿真", size=(95, 30), )
-        self.cont_sm.SetBackgroundColour('#E0EEEE')
+        load_tp_txt = wx.StaticText(self.panel, -1, "温度数据表选择")
+        self.dwlist_tp = wx.Choice(self.panel, -1, (85, 18), choices=sampleList)
+        self.dwlist_tp.SetSelection(2)
 
-        self.cont_tp = wxBtn.GenButton(self.panel, -1, u"暂停仿真", size=(95, 30), )
-        self.cont_tp.SetBackgroundColour('#E0EEEE')
-
-        self.cont_fuc = wxBtn.GenButton(self.panel, -1, u"暂停仿真", size=(95, 30), )
+        load_tp_fuc = wx.StaticText(self.panel, -1, "数据融合方法选择")
+        self.dwlist_fuc = wx.Choice(self.panel, -1, (85, 18), choices=sampleList)
+        self.cont_fuc = wxBtn.GenButton(self.panel, -1, u"开始仿真", size=(95, 30), )
         self.cont_fuc.SetBackgroundColour('#E0EEEE')
 
-        inBox3.Add(self.cont_co, 0, wx.ALL | wx.EXPAND, 1)
-        inBox3.Add(self.cont_sm, 0, wx.ALL | wx.EXPAND, 1)
-        inBox3.Add(self.cont_tp, 0, wx.ALL | wx.EXPAND, 1)
+        inBox3.Add(load_co_txt, 0, wx.ALL | wx.CENTER, 1)
+        inBox3.Add(self.dwlist_co, 0, wx.ALL | wx.CENTER, 1)
+
+        inBox3.Add(load_sm_txt, 0, wx.ALL | wx.CENTER, 1)
+        inBox3.Add(self.dwlist_sm, 0, wx.ALL | wx.CENTER, 1)
+
+        inBox3.Add(load_tp_txt, 0, wx.ALL | wx.CENTER, 1)
+        inBox3.Add(self.dwlist_tp, 0, wx.ALL | wx.CENTER, 1)
+
+        inBox3.Add(load_tp_fuc, 0, wx.ALL | wx.CENTER, 1)
+        inBox3.Add(self.dwlist_fuc, 0, wx.ALL | wx.CENTER, 1)
         inBox3.Add(self.cont_fuc, 0, wx.ALL | wx.EXPAND, 1)
 
         sizer_right.Add(inBox3, 0, wx.ALL | wx.CENTER, 1)
-        # inBox2 = wx.BoxSizer(wx.HORIZONTAL)
-        # inBox2.Add(tit_timeandfren, 0, wx.ALL | wx.EXPAND, 1)
 
         # self.btn_go = wxBtn.GenButton(self.panel, label=u"点击预览", size=(80, 30))
         # self.btn_go.Centre()
         # self.Bind(wx.EVT_BUTTON, self.DrawPic, self.btn_go)
         # inBox3.Add(self.btn_go, 0, wx.ALL | wx.EXPAND, 1)
-
-
 
 
         #   画图部分
@@ -177,52 +186,16 @@ class MySimWindow(wx.Frame):
         self.Centre()
 
         pass
+    #
+    def dwlist_cb_co(self):
 
+        pass
 
+    def dwlist_cb_sm(self):
+        pass
 
+    def dwlist_cb_tp(self):
+        pass
 
-
-
-
-        #       左侧控制台输出部分pos=(5,10),pos=(10,27),pos=(95,690)
-
-        #
-        # self.out_con.SetBackgroundColour('#FFFAF0')
-        # ssizer.Add(self.out_con, 0, wx.ALL | wx.EXPAND, 2)
-        #
-
-
-        # self.vboxSizer.Add(ssizer, 0, wx.ALL | wx.LEFT, 2)
-
-        #       中央控制台输出部分
-        # sb_center = wx.StaticBox()
-        # fig = plt.figure()
-
-
-
-
-
-
-        # sb_right = wx.StaticBox(self.panel, -1, u"仿真控制按钮:", pos=(925, 10), size=(270, 720))
-
-        #
-
-        # box_left = wx.StaticBox()
-
-        # self.box_left = wx.StaticBox(self.panel,-1,'控制台输出')
-        # self.box_center = wx.StaticBox(self.panel,-1,'仿真图形演示')
-        # self.box_right = wx.StaticBox(self.panel,-1,'控制按钮')
-        #
-        # sizer_left = wx.StaticBoxSizer(self.box_left,wx.HORIZONTAL)
-        # sizer_left.Add(label1,0, wx.ALL | wx.EXPAND,2)
-        # sizer_center = wx.StaticBoxSizer(self.box_center,wx.HORIZONTAL)
-        # sizer_center.Add(label2,0,wx.ALL | wx.EXPAND,2)
-        # sizer_right = wx.StaticBoxSizer(self.box_right,wx.HORIZONTAL)
-        # sizer_right.Add(label3,0, wx.ALL | wx.EXPAND ,2)
-        #
-        # vboxSizer.Add(self.box_left,0, wx.ALL | wx.EXPAND ,2)
-        # vboxSizer.Add(self.box_center, 0, wx.ALL | wx.EXPAND, 2)
-
-        #
-        # # self.nm_a, 0, wx.ALL | wx.LEFT, 5
-
+    def dwlist_cb_fuc(self):
+        pass
