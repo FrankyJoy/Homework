@@ -1,6 +1,8 @@
 
 import pymysql
+from MyObject import *
 
+#       根据所传内容填充数据库
 def fillCoTable(yline,time,fren,dbtable):
     # 打开数据库连接
     db = pymysql.connect("localhost" ,"root" ,"root123","testDb")
@@ -40,7 +42,7 @@ def fillCoTable(yline,time,fren,dbtable):
     # 关闭数据库连接
     db.close()
     pass
-
+#       获取所有列表名称
 def getListOfTable(dbName):
     db = pymysql.connect("localhost", "root", "root123", dbName)
     cursor = db.cursor()
@@ -64,4 +66,27 @@ def getListOfTable(dbName):
         tableList.append(str(x).replace('(\'','').replace(',','').replace('\')',''))
 
     return tableList
+    pass
+
+#       通过数据库名和表名获取数据
+def getDataOfTable(dbName,tbName):
+    db = pymysql.connect("localhost", "root", "root123", dbName)
+    cursor = db.cursor()
+
+    sql = "select * from " + dbName + "." + tbName
+    index = cursor.execute(sql)
+    db.close()
+    data = list(cursor.fetchmany(index))
+    data_list = []
+
+    for x in data:
+        data_list.append(SingleData(x[0],x[1],x[2],x[3]))
+
+    # print(len(data_list))
+    # for x in data_list:
+    #     print(x.id)
+    #     print(x.value)
+    #     print(x.time)
+    #     print(x.fren)
+    return data_list
     pass
