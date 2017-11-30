@@ -119,10 +119,7 @@ class MySimWindow(wx.Frame):
         self.btn_setData.SetBackgroundColour('#E0EEEE')
         self.Bind(wx.EVT_BUTTON,self.btn_setData_cb,self.btn_setData)
 
-        load_tp_fuc = wx.StaticText(self.panel, -1, "数据融合方法选择")
-        self.dwlist_fuc = wx.Choice(self.panel, -1, (85, 18), choices=sampleList)
-        self.cont_fuc = wxBtn.GenButton(self.panel, -1, u"开始仿真", size=(95, 30), )
-        self.cont_fuc.SetBackgroundColour('#E0EEEE')
+
 
         inBox3.Add(load_co_txt, 0, wx.ALL | wx.CENTER, 1)
         inBox3.Add(self.dwlist_co, 0, wx.ALL | wx.CENTER, 1)
@@ -135,6 +132,11 @@ class MySimWindow(wx.Frame):
 
         inBox3.Add(self.btn_setData, 0, wx.ALL | wx.EXPAND, 15)
 
+        funcList = ['功能测试用','D-S数据融合','RBF神经网络']
+        load_tp_fuc = wx.StaticText(self.panel, -1, "数据融合方法选择")
+        self.dwlist_fuc = wx.Choice(self.panel, -1, (85, 18), choices=funcList)
+        self.cont_fuc = wxBtn.GenButton(self.panel, -1, u"开始仿真", size=(95, 30), )
+        self.cont_fuc.SetBackgroundColour('#E0EEEE')
         inBox3.Add(load_tp_fuc, 0, wx.ALL | wx.CENTER, 1)
         inBox3.Add(self.dwlist_fuc, 0, wx.ALL | wx.CENTER, 1)
         inBox3.Add(self.cont_fuc, 0, wx.ALL | wx.EXPAND, 1)
@@ -192,30 +194,30 @@ class MySimWindow(wx.Frame):
 
         pass
 
-    #   读取数据按钮的回调函数
+    #       读取数据按钮的回调函数
     def btn_setData_cb(self,handler):
         tb_data_co = self.dwlist_co.GetStringSelection()
         tb_data_sm = self.dwlist_sm.GetStringSelection()
         tb_data_tp = self.dwlist_tp.GetStringSelection()
         tb_data_fuc = self.dwlist_fuc.GetStringSelection()
 
-        data_co = MysqlCon.getDataOfTable("testDb", tb_data_co)
-        data_sm = MysqlCon.getDataOfTable("testDb", tb_data_sm)
-        data_tp = MysqlCon.getDataOfTable("testDb", tb_data_tp)
+        self.data_co = MysqlCon.getDataOfTable("testDb", tb_data_co)
+        self.data_sm = MysqlCon.getDataOfTable("testDb", tb_data_sm)
+        self.data_tp = MysqlCon.getDataOfTable("testDb", tb_data_tp)
 
-        #           需要补充异常情况判断      ？？？
+        #        需要补充异常情况判断      ？？？
         #        获取数据表时间和频率\长度
-        time_co = data_co[0].time
-        time_sm = data_sm[0].time
-        time_tp = data_tp[0].time
+        time_co = self.data_co[0].time
+        time_sm = self.data_sm[0].time
+        time_tp = self.data_tp[0].time
 
-        fren_co = data_co[0].fren
-        fren_sm = data_sm[0].fren
-        fren_tp = data_tp[0].fren
+        fren_co = self.data_co[0].fren
+        fren_sm = self.data_sm[0].fren
+        fren_tp = self.data_tp[0].fren
 
-        len_co = len(data_co)
-        len_sm = len(data_sm)
-        len_tp = len(data_tp)
+        len_co = len(self.data_co)
+        len_sm = len(self.data_sm)
+        len_tp = len(self.data_tp)
 
         axes_x_co = []
         axes_x_sm = []
@@ -226,7 +228,7 @@ class MySimWindow(wx.Frame):
 
 
         temp = 1
-        for row in data_co:
+        for row in self.data_co:
             axes_x_co.append(temp*(1/fren_co))
             axes_y_co.append(row.value)
             temp = temp + 1
@@ -236,9 +238,8 @@ class MySimWindow(wx.Frame):
         self.axes_co.grid(True)
         self.axes_co.set_title(u'CO Data Is Ready!')
         self.axes_co.set_ylabel(u'??!!## ')
-        # self.MyFig.draw()
 
-        for row in data_sm:
+        for row in self.data_sm:
             axes_x_sm.append(temp*(1/fren_sm))
             axes_y_sm.append(row.value)
             temp = temp + 1
@@ -248,8 +249,8 @@ class MySimWindow(wx.Frame):
         self.axes_sm.grid(True)
         self.axes_sm.set_title(u'Smoke Data Is Ready!')
         self.axes_sm.set_ylabel(u'??!!## ')
-        # self.MyFig.draw()
-        for row in data_tp:
+
+        for row in self.data_tp:
             axes_x_tp.append(temp*(1/fren_tp))
             axes_y_tp.append(row.value)
             temp = temp + 1
@@ -260,6 +261,14 @@ class MySimWindow(wx.Frame):
         self.axes_tp.set_title(u'Temperature Data Is Ready!')
         self.axes_tp.set_ylabel(u'??!!## ')
         self.MyFig.draw()
+        pass
+
+    #       开始仿真按钮
+    def btn_beginSim_cb(self,handler):
+        # 暂时只实现以1秒为单位的动态演示
+        # 之后实现 以加权平均为方法的数据融合图形展示
+        # 之后实现，对仿真过程的控制
+        
         pass
 
 
